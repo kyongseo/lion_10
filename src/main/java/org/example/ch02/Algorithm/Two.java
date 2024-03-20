@@ -20,6 +20,7 @@ public class Two {
                 scores[i][j] = sc.nextInt();
             }
         }
+
         for (int i = 0; i < n; i++) {
             System.out.println((i+1) + "번째 학생의 점수는");
             for (int j = 0; j < m; j++) {
