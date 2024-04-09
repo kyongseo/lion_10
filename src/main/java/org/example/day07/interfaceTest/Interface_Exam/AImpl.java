@@ -1,4 +1,4 @@
-package org.example.day07.interfaceTest.Interface;
+package org.example.day07.interfaceTest.Interface_Exam;
 
 public class AImpl implements Ainter{
 
