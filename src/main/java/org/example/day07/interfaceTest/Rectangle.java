@@ -1,8 +1,6 @@
-package org.example.day07.Abstract;
+package org.example.day07.interfaceTest;
 
-import org.example.day07.Abstract.Shape;
-
-public class Rectangle extends Shape {
+public class Rectangle extends Shape implements Drawable{
 
     private double width;
     private double height;
@@ -15,5 +13,10 @@ public class Rectangle extends Shape {
     @Override
     public double calculate() {
         return (width * height);
+    }
+
+    @Override
+    public void draw() {
+        System.out.println("사각형을 그립니다.");
     }
 }

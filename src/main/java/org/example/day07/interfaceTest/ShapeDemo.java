@@ -1,4 +1,4 @@
-package org.example.day07.Abstract;
+package org.example.day07.interfaceTest;
 
 public class ShapeDemo {
 
@@ -8,5 +8,12 @@ public class ShapeDemo {
 
         Shape rectangle = new Rectangle(10,5);
         System.out.println("사각형의 너비 : " + rectangle.calculate());
+
+
+        Drawable drawable = new Rectangle(10,5);
+        drawable.draw();
+
+        triangle.draw();
+
     }
 }
