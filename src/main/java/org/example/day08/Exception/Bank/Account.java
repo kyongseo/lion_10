@@ -1,6 +1,5 @@
 package org.example.day08.Exception.Bank;
 
-// Account.java
 public class Account {
     private String accountNumber;
     private String accountName;
