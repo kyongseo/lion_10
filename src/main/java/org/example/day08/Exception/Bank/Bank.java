@@ -1,6 +1,5 @@
 package org.example.day08.Exception.Bank;
 
-// Bank.java
 import java.util.ArrayList;
 import java.util.List;
 
