@@ -22,7 +22,7 @@ public class Account {
             throw new InsufficientFundsException("잔액이 부족합니다.");
         }
         balance -= amount;
-        System.out.println(amount + "원을 출금하여 잔액 " + balance + "원이 되었습니다.");
+        System.out.println(amount + "원을 출금하여 " + balance + "원이 되었습니다.");
     }
 
 
@@ -34,7 +34,7 @@ public class Account {
         return accountName;
     }
 
-    public double getBalance() {
+    public int getBalance() {
         return balance;
     }
 }
