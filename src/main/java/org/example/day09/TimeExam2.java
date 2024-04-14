@@ -24,7 +24,7 @@ public class TimeExam2 {
         int days = period.getDays();
 
         // 결과 출력
-        System.out.println("입력한 날짜와 현재 날짜의 차이:");
+        System.out.printf("입력한 날짜와 현재 날짜의 차이:");
         System.out.println("년: " + years);
         System.out.println("월: " + months);
         System.out.println("일: " + days);
