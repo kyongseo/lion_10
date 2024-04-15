@@ -1,7 +1,5 @@
 package org.example.day10.box;
 
-import org.example.day09.InnerClass.Book;
-
 public class Box <T> {
     private T content;
 
