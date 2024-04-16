@@ -7,20 +7,21 @@ import java.util.Scanner;
 
 public class collectionExam2 {
 
-    public static void readScores(Scanner input, List<Integer> scores) throws IllegalAccessException {
+    public static void readScores(Scanner input, List<Integer> scores) throws InputMismatchException {
         while (true) {
             System.out.print("1-100사이의 숫자를 입력하세요(종료 : 0) : ");
 
             int score = input.nextInt();
 
             if (score > 100 || score < 0) {
-                throw new IllegalAccessException("1-100까지의 숫자만 입력하세요. 입력한 점수는 " + score + "입니다.");
+                throw new InputMismatchException("1-100까지의 숫자만 입력하세요. 입력한 점수는 " + score + "입니다.");
 
             } else if (score == 0) {
                 break;
             }
         }
     }
+
 
     public static void removeZero(List<Integer> scores) {
         scores.remove(Integer.valueOf(0));
@@ -58,8 +59,9 @@ public class collectionExam2 {
             // 결과 출력
             printScores(scores);
 
-        } catch (IllegalAccessException e) {
+        } catch (InputMismatchException e) {
             System.out.println("예외 발생: " + e.getMessage());
+            e.printStackTrace(); // 에러 스택 트레이스 출력
         }
     }
 }
