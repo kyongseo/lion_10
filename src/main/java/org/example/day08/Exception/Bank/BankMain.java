@@ -21,7 +21,7 @@ public class BankMain {
         account1.deposit(200000);
 
         try {
-            account1.withdraw(400000);
+            account1.withdraw(100000);
 
         } catch (InsufficientFundsException e) {
             System.out.println(e.getMessage());
