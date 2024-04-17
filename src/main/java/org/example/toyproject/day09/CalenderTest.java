@@ -1,4 +1,4 @@
-package org.example.toyproject;
+package org.example.toyproject.day09;
 
 import java.util.Calendar;
 import java.util.Scanner;
