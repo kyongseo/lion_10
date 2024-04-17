@@ -1,4 +1,4 @@
-package org.example.toyproject.day11;
+package org.example.toyproject.day11.사원관리시스템;
 
 import java.util.HashSet;
 import java.util.Set;
