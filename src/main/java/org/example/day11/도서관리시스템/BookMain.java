@@ -1,4 +1,4 @@
-package org.example.day11;
+package org.example.day11.도서관리시스템;
 
 public class BookMain {
     public static void main(String[] args) {
