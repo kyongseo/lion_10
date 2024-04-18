@@ -1,4 +1,6 @@
-package org.example.day11;
+package org.example.day11.사원관리시스템;
+
+import org.example.day11.사원관리시스템.Employee;
 
 import java.util.HashSet;
 import java.util.Set;

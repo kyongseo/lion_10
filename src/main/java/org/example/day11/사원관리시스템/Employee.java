@@ -1,6 +1,4 @@
-package org.example.day11;
-
-import java.util.Objects;
+package org.example.day11.사원관리시스템;
 
 import java.util.Objects;
 

@@ -1,7 +1,7 @@
-package org.example.day11;
+package org.example.day11.사원관리시스템;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.example.day11.사원관리시스템.Employee;
+import org.example.day11.사원관리시스템.EmployeeManager;
 
 
 public class EmployeeManagerDemo {
