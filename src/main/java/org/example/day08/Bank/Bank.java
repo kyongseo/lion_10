@@ -1,4 +1,4 @@
-package org.example.day08.Exception.Bank;
+package org.example.day08.Bank;
 
 import java.util.ArrayList;
 import java.util.List;

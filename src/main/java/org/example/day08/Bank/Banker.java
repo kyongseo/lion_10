@@ -1,4 +1,4 @@
-package org.example.day08.Exception.Bank;
+package org.example.day08.Bank;
 
 public class Banker {
     private String name;
