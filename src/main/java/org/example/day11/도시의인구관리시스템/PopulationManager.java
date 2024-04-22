@@ -1,6 +1,5 @@
-package org.example.day11;
+package org.example.day11.도시의인구관리시스템;
 
-import java.io.UncheckedIOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
