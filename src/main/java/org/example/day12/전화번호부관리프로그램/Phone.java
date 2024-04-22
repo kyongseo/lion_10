@@ -1,4 +1,4 @@
-package org.example.day12;
+package org.example.day12.전화번호부관리프로그램;
 
 import java.io.*;
 import java.util.Scanner;
@@ -26,7 +26,7 @@ public class Phone {
 
             System.out.println("===================================================");
 
-            String phoneList;
+            String phoneList; // list 정의
             BufferedReader br2 = new BufferedReader(new FileReader("src/main/java/org/example/day12/phone.txt"));
             System.out.println("phone.txt 내용을 읽어옵니다.");
 
