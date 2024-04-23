@@ -1,6 +1,8 @@
 package org.example.day14;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.util.HashSet;
@@ -11,7 +13,7 @@ public class ChatServer {
     private static final int PORT = 12345;
     private static Set<PrintWriter> allPrintWriters = new HashSet<>();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         System.out.println("Starting Chat Server");
         ServerSocket serverSocket = new ServerSocket(PORT);
         try{
@@ -24,3 +26,4 @@ public class ChatServer {
         }
     }
 }
+
