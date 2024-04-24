@@ -1,30 +1,21 @@
 package org.example.toyproject.chat;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 public class ChatServer {
     public static void main(String[] args) {
-        //1. 서버소켓을 생성!!
+        // 1. 서버 소켓 설정 및 공유 객체 정의
         try (ServerSocket serverSocket = new ServerSocket(9999);) {
             System.out.println("서버가 준비되었습니다.");
-            //여러명의 클라이언트의 정보를 기억할 공간
             Map<String, PrintWriter> chatClients = new HashMap<>();
 
             while (true) {
-                //2. accept() 를 통해서 소켓을 얻어옴.   (여러명의 클라이언트와 접속할 수 있도록 구현)
+                // 4. 어떤 클라이언트가 연결을 시도하면 수락
                 Socket socket = serverSocket.accept();
-                //Thread 이용!!
-                //여러명의 클라이언트의 정보를 기억할 공간
+                // 5. 쓰레드 호출
                 new ChatThread(socket, chatClients).start();
-
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -34,7 +25,6 @@ public class ChatServer {
 }
 
 class ChatThread extends Thread {
-    //생성자를 통해서 클라이언트 소켓을 얻어옴.
     private Socket socket;
     private String id;
     private Map<String, PrintWriter> chatClients;
@@ -42,22 +32,21 @@ class ChatThread extends Thread {
     private BufferedReader in;
     PrintWriter out;
 
+    // 6. 쓰레드가 호출되면 동시에 생성자 실행
     public ChatThread(Socket socket, Map<String, PrintWriter> chatClients) {
         this.socket = socket;
         this.chatClients = chatClients;
 
-        //클라이언트가 생성될 때 클라이언트로 부터 아이디를 얻어오게 하고 싶어요.
-        //각각 클라이언트와 통신 할 수 있는 통로얻어옴.
         try {
+            // 8. 클라이언트에게 id를 입력받고, broadcast를 통해 현재 연결되어 있는 클라이언트에게 입장 알림을 보내주고, 서버에 새로운 id를 출력한다.
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            //Client가 접속하자마 id를 보낸다는 약속!!
             id = in.readLine();
-            //이때..  모든 사용자에게 id님이 입장했다라는 정보를 알려줌.
             broadcast(id + "님이 입장하셨습니다.");
             System.out.println("새로운 사용자의 아이디는 " + id + "입니다.");
 
-            //동시에 일어날 수도..
+            // 9. chatClients.put(this.id, out)를 실행할 때
+            // synchronized를 이용해 chatClients에 다른 쓰레드가 접근할 수 없게 해준다.
             synchronized (chatClients) {
                 chatClients.put(this.id, out);
             }
@@ -69,23 +58,28 @@ class ChatThread extends Thread {
 
     @Override
     public void run() {
+        // 해당 클라이언트의 채팅이 시작됐다는 알림을 서버에게 전송하고,
+        // 클라이언트가 /quit를 입력하기 전까지 입력하는 값들은 전부 모든 클라이언트에게 전송해준다.
+        // 종료될 때까지 반복
         System.out.println(id + "사용자 채팅시작!!");
-        //run
-        //연결된 클라이언트가 메시지를 전송하면, 그 메시지를 받아서 다른 사용자들에게 보내줌..
         String msg = null;
         try {
             while ((msg = in.readLine()) != null) {
-                if ("/quit".equalsIgnoreCase(msg))
-                    break;
+                if ("/quit".equalsIgnoreCase(msg))  break;
 
-                if (msg.indexOf("/to") == 0)
-                    sendMsg(msg);
-                else
+//                if(msg.split(" ").length == 3 && "/to".equalsIgnoreCase(msg.split(" ")[0])){
+                if("/to".equalsIgnoreCase(msg.split(" ")[0])){
+                    sendMsg(id, msg.split(" ")[1], msg.split(" ")[2]);
+                } else{
                     broadcast(id + " : " + msg);
+                }
             }
+
         } catch (IOException e) {
             System.out.println(e);
             e.printStackTrace();
+            // 해당 클라이언트가 /quit를 눌러 입력이 종료되면, 그 클라이언트를 공유객체에서 제거해주고,
+            // 모든 클라이언트에게 해당 클라이언트가 나갔다는 알림을 전송한다.
         } finally {
             synchronized (chatClients) {
                 chatClients.remove(id);
@@ -110,42 +104,34 @@ class ChatThread extends Thread {
         }
     }
 
-    //메시지를 특정 사용자에게만 보내는 메서드
-    public void sendMsg(String msg) {
-        int firstSpaceIndex = msg.indexOf(" ");
-        if (firstSpaceIndex == -1) return; //공백이 없다면....
 
-        int secondSpaceIndex = msg.indexOf(" ", firstSpaceIndex + 1);
-        if (secondSpaceIndex == -1) return; //두번재 공백이 없다는 것도 메시지가 잘못된거니까..
+    public void broadcast(String msg) {
+        // broadcast에서 chatClients에 접근하는 동안엔 chatClients에 클라이언트 추가/제거가 불가하게 설정
+        synchronized (chatClients) {
+            // chatClients의 value값들을 저장한 it 객체 생성 즉, 연결된 모든 클라이언트가 저장됨
+            Iterator<PrintWriter> it = chatClients.values().iterator();
 
-        String to = msg.substring(firstSpaceIndex + 1, secondSpaceIndex);
-        String message = msg.substring(secondSpaceIndex + 1);
-
-        //to(수신자)에게 메시지 전송.
-        PrintWriter pw = chatClients.get(to);
-        if (pw != null) {
-            pw.println(id + "님으로부터 온 비밀 메시지 : " + message);
-        } else {
-            System.out.println("오류 : 수신자 " + to + " 님을 찾을 수 없습니다.");
+            while (it.hasNext()) {
+                // 해당 클라이언트로 전송하는 out 객체 받아주기
+                PrintWriter out = it.next();
+                try {
+                    // 해당 클라이언트에게 전송
+                    out.println(msg);
+                } catch (Exception e) {
+                    // 뭔가 오류가 나면 해당 객체 삭제(chatClients에서도 삭제)
+                    it.remove();
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    //메지시를 전체 사용자에게 보내는 메서드
-    public void broadcast(String msg) {
-//        for (PrintWriter out : chatClients.values()) {
-//            out.println(msg);
-////            out.flush();
-//        }
+    public void sendMsg(String fromId, String toId, String msg) {
         synchronized (chatClients) {
-            Iterator<PrintWriter> it = chatClients.values().iterator();
-            while (it.hasNext()) {
-                PrintWriter out = it.next();
-                try {
-                    out.println(msg);
-                } catch (Exception e) {
-                    it.remove();  //브로드케스트 할 수 없는 사용자를 제거한다.
-                    e.printStackTrace();
-                }
+            if(chatClients.containsKey(toId)){
+                chatClients.get(toId).println(fromId + "님이 " + toId + "님에게 보낸 메시지: " + msg);
+            } else{
+                chatClients.get(fromId).println("해당 사용자가 존재하지 않습니다.");
             }
         }
     }

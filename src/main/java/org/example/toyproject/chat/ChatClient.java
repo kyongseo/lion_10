@@ -1,31 +1,30 @@
 package org.example.toyproject.chat;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class ChatClient {
     public static void main(String[] args) {
-        //아이디가 처음에 입력되게 하기 위해서 args[0] 에서 받아오는 것으로 구현해봅시다.
+        // 2. id 입력하지 않았다면 클라이언트 연결하지 않고 프로세스 종료
         if (args.length != 1) {
             System.out.println("사용법 : java ChatClent id");
             System.exit(1);
         }
 
+        // 3. 서버 소켓과 동일한 포트로 연결하고, 입력 출력 객체 생성
         try (Socket socket = new Socket("127.0.0.1", 9999);
              PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
         ) {
-            //접속되면 id를 서버에 보낸다. (서버와의 약속!!)
+
+            // 7. 서버에게 id 전송
             out.println(args[0]);
 
-            //네트워크에서 입력된 내용을 담당하는 부분을 Thread로..
+            // 8. 쓰레드 시작
             new InputThread(socket, in).start();
 
-            //키보드로부터 입력받은 내용을 서버에 보내는코드
+            // 9. 클라이언트가 서버에게 입력값 전달(종료할 때까지 반복)
             String msg = null;
             while ((msg = keyboard.readLine()) != null) {
                 out.println(msg);
