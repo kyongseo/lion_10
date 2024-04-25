@@ -1,6 +1,6 @@
 package org.example.day16;
 
-public interface MyFunctionalInterface {
+public interface MyFunctionalInterface1 {
 
     public void method1();
 

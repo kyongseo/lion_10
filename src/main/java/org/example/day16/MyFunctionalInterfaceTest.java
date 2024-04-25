@@ -1,6 +1,6 @@
 package org.example.day16;
 
-class MyFunctionalInterfaceImpl implements MyFunctionalInterface {
+class MyFunctionalInterfaceImpl implements MyFunctionalInterface1 {
     @Override
     public void method1() {
         System.out.println("MyFunctionalInterface Method 1 call");
@@ -11,12 +11,12 @@ public class MyFunctionalInterfaceTest {
 
     public static void main(String[] args) {
 
-        MyFunctionalInterface myFunctionalInterface;
-        MyFunctionalInterface myFunctionalInterface1;
-        MyFunctionalInterface myFunctionalInterface2;
+        MyFunctionalInterface1 myFunctionalInterface;
+        MyFunctionalInterface1 myFunctionalInterface1;
+        MyFunctionalInterface1 myFunctionalInterface2;
 
         myFunctionalInterface = new MyFunctionalInterfaceImpl();
-        MyFunctionalInterface myFunctional = new MyFunctionalInterface() {
+        MyFunctionalInterface1 myFunctional = new MyFunctionalInterface1() {
 
             @Override
             public void method1() {
