@@ -50,6 +50,7 @@ class ChatServerThread extends Thread {
             }
 
             // 접속 시 클라이언트의 정보 출력
+            // [id] /port 번호 형태로 출력됨
             System.out.println("[" + id + "]" + socket.getInetAddress() + "." + socket.getPort() + " 님이 입장했습니다.");
             int size = clients.size() + 1;
             System.out.println("현재 서버의 접속자는 " + size + "명 입니다.");
