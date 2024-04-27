@@ -163,7 +163,6 @@ class ChatServerThread extends Thread {
 
                 existRooms.forEach((roomNumber, roomName) -> pw.print(roomName + " "));
                 pw.println();
-               // pw.print("들어갈 방 번호를 입력 하세요 : ");
             }
         }
     }
@@ -200,6 +199,9 @@ class ChatServerThread extends Thread {
     // join 해서 들어온 경우
     public void enterRoom(int room) {
         sendMessageToRoom(room, id + "님이 입장하였습니다.");
+
+        int size = clients.size() ;
+        sendMessageToRoom(room  ,"현재 " + room + "번 방의 인원수는 " + size +"명 입니다.");
     }
 
     // 방 나가기
@@ -249,7 +251,7 @@ class ChatServerThread extends Thread {
                 int clientRoom = userRooms.get(clientId);
                 if (clientRoom == currentRoom && !clientId.equals(this.id)) {
                     try {
-                        clientPw.println(id + ": " + msg);
+                        clientPw.println("[" + id + "] " + msg);
                     } catch (Exception e) {
                         clients.remove(clientId);
                         e.printStackTrace();
