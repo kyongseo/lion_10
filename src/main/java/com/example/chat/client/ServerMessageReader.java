@@ -3,8 +3,9 @@ package com.example.chat.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+// 서버로부터 메시지를 읽어 화면에 출력하는 역할
 public class ServerMessageReader implements Runnable {
-    private BufferedReader in;
+    private BufferedReader in; // 서버로부터 메시지를 읽기 위한 BufferedReader 객체
 
     public ServerMessageReader(BufferedReader in) {
         this.in = in;
