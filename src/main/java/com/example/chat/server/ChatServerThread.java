@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 
 import static java.util.Map.*;
 
-class ChatServerThread extends Thread {
+public class ChatServerThread extends Thread {
 
     private Socket socket;
     private String id;
     private Map<String, PrintWriter> clients;   // 클라이언트 메시지
-    private Map<String, Integer> userRooms; // 클라이언트의 방
+    private Map<String, Integer> userRooms; // 클라이언트 방
 
     private BufferedReader br;
     private PrintWriter pw;
@@ -60,10 +60,11 @@ class ChatServerThread extends Thread {
                 clients.put(this.id, pw);
                 userRooms.put(this.id, 0);    // 처음에 입장 시 방번호 0번
             }
+
         } catch (Exception e) {
             System.out.println(e);
         }
-    }
+    }//ChatServerThread
 
     @Override
     public void run() {
@@ -95,14 +96,14 @@ class ChatServerThread extends Thread {
                 else if (msg.startsWith("/join")) {
                     String[] parts = msg.split(" ");
                     if (parts.length < 2) {
-                        pw.println("방 번호를 입력하세요. 예: /join [방번호]");
+                        pw.println("방 번호를 입력하세요. ( /join [방번호] )");
                         continue;
                     }
                     try {
                         int roomNum = Integer.parseInt(parts[1]);
                         joinRoom(roomNum);
                     } catch (NumberFormatException e) {
-                        pw.println("올바른 방 번호를 입력하세요. 예: /join [방번호]");
+                        pw.println("올바른 방 번호를 입력하세요. ( /join [방번호] )");
                     }
                 }
 
@@ -144,10 +145,10 @@ class ChatServerThread extends Thread {
                     throw new RuntimeException(e);
                 }
             }
-        }
-    }
+        }//finally
+    }//run
 
-    // 방의 리스트 보기
+    //  방 목록 보기
     public void listRooms() {
         synchronized (userRooms) {
             // 방 목록
@@ -157,15 +158,15 @@ class ChatServerThread extends Thread {
 
             // 방 목록이 비어있는지 확인하여 메시지 전송
             if (existRooms.isEmpty()) {
-                pw.println("방이 없습니다. 방을 생성하려면 /create를 입력하세요.");
+                pw.println("방이 없습니다. /create를 입력하여 방을 생성하세요.");
             } else {
                 pw.println("방 목록: ");
 
                 existRooms.forEach((roomNumber, roomName) -> pw.print(roomName + " "));
                 pw.println();
             }
-        }
-    }
+        }//synchronized
+    } //listRooms
 
     // 방 참가
     public void joinRoom(int roomNum) {
@@ -177,6 +178,14 @@ class ChatServerThread extends Thread {
                 // 이미 해당 방에 입장한 상태인지 확인
                 if (currentRoom == roomNum) {
                     pw.println("이미 해당 방에 입장하셨습니다.");
+                    return;
+                }
+
+                // 현재 방의 인원 수 체크
+                int roomOccupancy = (int) userRooms.values().stream().filter(r -> r == roomNum).count();
+
+                if (roomOccupancy >= 3) {
+                    pw.println("해당 방은 이미 최대 인원(3명)에 도달하여 더 이상 입장할 수 없습니다.");
                     return;
                 }
 
@@ -193,15 +202,12 @@ class ChatServerThread extends Thread {
             } else {
                 pw.println("해당하는 방 번호가 존재하지 않습니다.");
             }
-        }
-    }
+        }//synchronized
+    } //joinRoom
 
     // join 해서 들어온 경우
     public void enterRoom(int room) {
         sendMessageToRoom(room, id + "님이 입장하였습니다.");
-
-        int size = clients.size() ;
-        sendMessageToRoom(room  ,"현재 " + room + "번 방의 인원수는 " + size +"명 입니다.");
     }
 
     // 방 나가기
@@ -222,10 +228,10 @@ class ChatServerThread extends Thread {
                 // 방에 남아있는 사용자에게 메시지 전송
                 sendMessageToRoom(currentRoom, id + "님이 퇴장했습니다.");
             }
-        }
-    }
+        }//synchronized
+    }//exitRoom
 
-    // 해당 방을 사용하는 사람에게 입장/퇴장 메시지 전송
+    // 특정 방에 있는 클라이언트들에게 메시지 전송
     public void sendMessageToRoom(int room, String message) {
         synchronized (clients) {
             clients.forEach((clientId, clientPw) -> {
@@ -236,10 +242,10 @@ class ChatServerThread extends Thread {
                         clients.remove(clientId);
                         e.printStackTrace();
                     }
-                }
+                }//if
             });
-        }
-    }
+        }//synchronized
+    }//sendMessageToRoom
 
     // 메시지 보내기
     public void sendMessage(String msg) {
@@ -256,8 +262,8 @@ class ChatServerThread extends Thread {
                         clients.remove(clientId);
                         e.printStackTrace();
                     }
-                }
+                }//if
             });
-        }
-    }
+        }//synchronized
+    }//sendMessage
 }
