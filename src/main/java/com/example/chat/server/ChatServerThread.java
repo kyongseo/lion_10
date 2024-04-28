@@ -18,6 +18,13 @@ public class ChatServerThread extends Thread {
     private BufferedReader br;
     private PrintWriter pw;
 
+//    private int nextRoomNumber = 1; // 다음에 생성할 방 번호를 저장하는 변수
+//
+//    public int getNextRoomNumber() {
+//        return nextRoomNumber++;
+//    }
+
+    // 방을 생성할 때 번호 증가
     private static AtomicInteger nextRoomNumber = new AtomicInteger(1);
 
     public static int getNextRoomNumber() {
@@ -134,7 +141,7 @@ public class ChatServerThread extends Thread {
                 else {
                     sendMessage(msg);
                 }
-            }
+            } //try
         } catch (IOException e) {
             System.out.println(e);
         } finally {
@@ -154,7 +161,7 @@ public class ChatServerThread extends Thread {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            }
+            }//if
 
             if (socket != null) {
                 try {
@@ -162,7 +169,7 @@ public class ChatServerThread extends Thread {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            }
+            }//if
         }//finally
     }//run
 
@@ -290,5 +297,6 @@ public class ChatServerThread extends Thread {
     private void handleAIResponse(String message) {
         String response = AI_RESPONSES.getOrDefault(message, "죄송해요, 이해하지 못했어요.");
         pw.println(response);
-    }
-}
+    }//handleAIResponse
+
+}//ChatServerThread
