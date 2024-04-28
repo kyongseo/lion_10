@@ -24,6 +24,17 @@ public class ChatServerThread extends Thread {
         return nextRoomNumber.getAndIncrement();
     }
 
+    // AI 챗봇
+    private static final Map<String, String> AI_RESPONSES = Map.of(
+            "날씨", "오늘은 맑은 날씨입니다.",
+            "오늘 날씨", "오늘은 맑은 날씨입니다.",
+            "사용법", "방 목록 보기 : /list\n" +
+                             "방 생성 : /create\n" +
+                             "방 입장 : /join [방번호]\n" +
+                             "방 나가기 : /exit\n" +
+                             "접속 종료 : /bye"
+    );
+
     public ChatServerThread(Socket socket, Map<String, PrintWriter> clients, Map<String, Integer> userRooms) {
         this.socket = socket;
         this.clients = clients;
@@ -77,6 +88,12 @@ public class ChatServerThread extends Thread {
                     break;
                 }
 
+                // AI 챗봇 응답
+                if (msg.startsWith("/ai")) {
+                    String query = msg.substring(4).trim();
+                    handleAIResponse(query);
+                }
+
                 // 방 목록 보기
                 if ("/list".equalsIgnoreCase(msg)) {
                     listRooms();
@@ -89,6 +106,7 @@ public class ChatServerThread extends Thread {
                         userRooms.put(this.id, room);
                         enterRoom(room);
                         pw.println(room + "번 방이 생성되었습니다.");
+                        pw.println("궁금한 점은 AI 챗봇에게 물어보세요(오늘의 날씨, 사용법) '/ai [질문]'  ");
                     }
                 }
 
@@ -96,14 +114,14 @@ public class ChatServerThread extends Thread {
                 else if (msg.startsWith("/join")) {
                     String[] parts = msg.split(" ");
                     if (parts.length < 2) {
-                        pw.println("방 번호를 입력하세요. ( /join [방번호] )");
+                        pw.println("방 번호를 입력하세요. '/join [방번호]' ");
                         continue;
                     }
                     try {
                         int roomNum = Integer.parseInt(parts[1]);
                         joinRoom(roomNum);
                     } catch (NumberFormatException e) {
-                        pw.println("올바른 방 번호를 입력하세요. ( /join [방번호] )");
+                        pw.println("올바른 방 번호를 입력하세요. '/join [방번호]' ");
                     }
                 }
 
@@ -208,6 +226,7 @@ public class ChatServerThread extends Thread {
     // join 해서 들어온 경우
     public void enterRoom(int room) {
         sendMessageToRoom(room, id + "님이 입장하였습니다.");
+        pw.println("궁금한 점은 AI 챗봇에게 물어보세요(오늘의 날씨, 사용법) '/ai [질문]'  ");
     }
 
     // 방 나가기
@@ -266,4 +285,10 @@ public class ChatServerThread extends Thread {
             });
         }//synchronized
     }//sendMessage
+
+    // AI 챗봇 응답 처리
+    private void handleAIResponse(String message) {
+        String response = AI_RESPONSES.getOrDefault(message, "죄송해요, 이해하지 못했어요.");
+        pw.println(response);
+    }
 }
