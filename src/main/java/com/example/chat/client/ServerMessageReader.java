@@ -16,7 +16,7 @@ public class ServerMessageReader implements Runnable {
         try {
             String serverLine;
             while ((serverLine = in.readLine()) != null) {
-                System.out.println(serverLine); // 서버로부터 받은 메시지를 출력
+                System.out.println(serverLine); // 서버로부터 받은 메시지 출력
             }
         } catch (IOException e) {
             System.out.println("Server connection was closed.");
