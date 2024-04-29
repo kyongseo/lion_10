@@ -2,6 +2,8 @@ package com.example.chat.server;
 
 import java.io.*;
 import java.net.Socket;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -37,11 +39,11 @@ public class ChatServerThread extends Thread {
             "날씨", "오늘은 맑은 날씨입니다.",
             "오늘 날씨", "오늘은 맑은 날씨입니다.",
             "사용법", "방 목록 보기 : /list\n" +
-                             "방 생성 : /create\n" +
-                             "방 입장 : /join [방번호]\n" +
-                             "방 나가기 : /exit\n" +
-                             "접속 종료 : /bye\n" +
-                             "귓솟말 : /whisper [대상 닉네임] [보낼 메시지]"
+                    "방 생성 : /create\n" +
+                    "방 입장 : /join [방번호]\n" +
+                    "방 나가기 : /exit\n" +
+                    "접속 종료 : /bye\n" +
+                    "귓솟말 : /whisper [대상 닉네임] [보낼 메시지]"
     );
 
     public ChatServerThread(Socket socket, Map<String, PrintWriter> clients, Map<String, Integer> userRooms) {
@@ -105,8 +107,9 @@ public class ChatServerThread extends Thread {
                 }
 
                 // 비밀 채팅, 귓솟말
-               else if (msg.startsWith("/whisper"))
+                else if (msg.startsWith("/whisper")) {
                     sendWhisperMessage(msg);
+                }
 
                 // 방 목록 보기
                 else if ("/list".equalsIgnoreCase(msg)) {
@@ -225,7 +228,7 @@ public class ChatServerThread extends Thread {
                     return;
                 }
 
-                // 다른 방으로 이동하기 전에 현재 방을 나가기
+                // 다른 방으로 이동하기 전에 현재 방 나가고 이동
                 if (currentRoom != 0) {
                     exitRoom();
                 }
@@ -247,9 +250,7 @@ public class ChatServerThread extends Thread {
         pw.println("궁금한 점은 AI 챗봇에게 물어보세요. (/ai [질문])  ");
     }
 
-    /**
-     * 비밀 채팅, 귓솟말
-     */
+    //비밀 채팅, 귓솟말
     private void sendWhisperMessage(String mag) {
         String[] parts = mag.split(" ");
         if (parts.length < 3) {
@@ -273,9 +274,10 @@ public class ChatServerThread extends Thread {
 
             PrintWriter targetPw = clients.get(target);
             targetPw.println("[귓속말] " + id + "님의 메시지: " + message);
+
+            pw.println("[귓속말] " + id + "님의 메시지: " + message);
         }
     }
-
 
     // 방 나가기
     public void exitRoom() {
