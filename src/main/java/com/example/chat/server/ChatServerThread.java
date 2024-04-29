@@ -40,7 +40,8 @@ public class ChatServerThread extends Thread {
                              "방 생성 : /create\n" +
                              "방 입장 : /join [방번호]\n" +
                              "방 나가기 : /exit\n" +
-                             "접속 종료 : /bye\n"
+                             "접속 종료 : /bye\n" +
+                             "귓솟말 : /whisper [대상 닉네임] [보낼 메시지]"
     );
 
     public ChatServerThread(Socket socket, Map<String, PrintWriter> clients, Map<String, Integer> userRooms) {
@@ -57,6 +58,7 @@ public class ChatServerThread extends Thread {
             pw.println("방 입장 : /join [방번호]");
             pw.println("방 나가기 : /exit");
             pw.println("접속 종료 : /bye");
+            pw.println("귓솟말 : /whisper [대상 닉네임] [보낼 메시지]");
 
             while (true) {
                 // 클라이언트가 접속 시 id 설정
@@ -97,13 +99,17 @@ public class ChatServerThread extends Thread {
                 }
 
                 // AI 챗봇 응답
-                if (msg.startsWith("/ai")) {
+                else if (msg.startsWith("/ai")) {
                     String query = msg.substring(4).trim();
                     handleAIResponse(query);
                 }
 
+                // 비밀 채팅, 귓솟말
+               else if (msg.startsWith("/whisper"))
+                    sendWhisperMessage(msg);
+
                 // 방 목록 보기
-                if ("/list".equalsIgnoreCase(msg)) {
+                else if ("/list".equalsIgnoreCase(msg)) {
                     listRooms();
                 }
 
@@ -121,14 +127,14 @@ public class ChatServerThread extends Thread {
                 else if (msg.startsWith("/join")) {
                     String[] parts = msg.split(" ");
                     if (parts.length < 2) {
-                        pw.println("방 번호를 입력하세요. '/join [방번호]' ");
+                        pw.println("방 번호를 입력하세요. (/join [방번호]) ");
                         continue;
                     }
                     try {
                         int roomNum = Integer.parseInt(parts[1]);
                         joinRoom(roomNum);
                     } catch (NumberFormatException e) {
-                        pw.println("올바른 방 번호를 입력하세요. '/join [방번호]' ");
+                        pw.println("올바른 방 번호를 입력하세요. (/join [방번호]) ");
                     }
                 }
 
@@ -238,8 +244,38 @@ public class ChatServerThread extends Thread {
     // join 해서 들어온 경우
     public void enterRoom(int room) {
         sendMessageToRoom(room, id + "님이 입장하였습니다.");
-        pw.println("궁금한 점은 AI 챗봇에게 물어보세요(오늘의 날씨, 사용법) '/ai [질문]'  ");
+        pw.println("궁금한 점은 AI 챗봇에게 물어보세요. (/ai [질문])  ");
     }
+
+    /**
+     * 비밀 채팅, 귓솟말
+     */
+    private void sendWhisperMessage(String mag) {
+        String[] parts = mag.split(" ");
+        if (parts.length < 3) {
+            pw.println("/whisper [대상 닉네임] [보낼 메시지]를 입력하여 비밀 채팅을 하세요.");
+            return;
+        }
+
+        String target = parts[1];
+        String message = mag.substring(mag.indexOf(parts[2]));
+
+        synchronized (clients) {
+            if (!clients.containsKey(target)) {
+                pw.println("해당 유저가 존재하지 않습니다.");
+                return;
+            }
+
+            if (target.equalsIgnoreCase(id)) {
+                pw.println("자기 자신에게 귓속말을 보낼 수 없습니다.");
+                return;
+            }
+
+            PrintWriter targetPw = clients.get(target);
+            targetPw.println("[귓속말] " + id + "님의 메시지: " + message);
+        }
+    }// sendWhisperMessage
+
 
     // 방 나가기
     public void exitRoom() {
