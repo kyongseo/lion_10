@@ -23,7 +23,7 @@ public class ChatServer {
                 // 클라이언트의 접속 대기, 클라이언트 소켓 받아오기
                 Socket clientSocket = serverSocket.accept();
 
-                // 새로운 클라이언트를 처리할 ChatServerThread 스레드
+                // 새로운 클라이언트를 처리할 다중 ChatServerThread
                 new ChatServerThread(clientSocket, clients, userRooms).start();
             }
 
