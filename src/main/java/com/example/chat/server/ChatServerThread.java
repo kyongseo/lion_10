@@ -18,13 +18,14 @@ public class ChatServerThread extends Thread {
     private BufferedReader br;
     private PrintWriter pw;
 
+    // 방 생성할 때 번호 1 씩 증가
 //    private int nextRoomNumber = 1; // 다음에 생성할 방 번호를 저장하는 변수
 //
 //    public int getNextRoomNumber() {
 //        return nextRoomNumber++;
 //    }
 
-    // 방을 생성할 때 번호 증가
+    // 방을 생성할 때 번호 증가 -> 다중스레드 환경애서 AtomicInteger 사용
     private static AtomicInteger nextRoomNumber = new AtomicInteger(1);
 
     public static int getNextRoomNumber() {
@@ -39,7 +40,8 @@ public class ChatServerThread extends Thread {
                              "방 생성 : /create\n" +
                              "방 입장 : /join [방번호]\n" +
                              "방 나가기 : /exit\n" +
-                             "접속 종료 : /bye"
+                             "접속 종료 : /bye\n",
+            "현재 인원","현재은 명 입니다. "
     );
 
     public ChatServerThread(Socket socket, Map<String, PrintWriter> clients, Map<String, Integer> userRooms) {
@@ -113,7 +115,6 @@ public class ChatServerThread extends Thread {
                         userRooms.put(this.id, room);
                         enterRoom(room);
                         pw.println(room + "번 방이 생성되었습니다.");
-                        pw.println("궁금한 점은 AI 챗봇에게 물어보세요(오늘의 날씨, 사용법) '/ai [질문]'  ");
                     }
                 }
 
@@ -207,7 +208,9 @@ public class ChatServerThread extends Thread {
                 }
 
                 // 현재 방의 인원 수 체크
-                int roomOccupancy = (int) userRooms.values().stream().filter(r -> r == roomNum).count();
+                int roomOccupancy = (int) userRooms.values().stream()
+                        .filter(r -> r == roomNum)
+                        .count();
 
                 if (roomOccupancy >= 3) {
                     pw.println("해당 방은 이미 최대 인원(3명)에 도달하여 더 이상 입장할 수 없습니다.");
