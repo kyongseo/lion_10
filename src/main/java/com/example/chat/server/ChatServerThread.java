@@ -40,8 +40,7 @@ public class ChatServerThread extends Thread {
                              "방 생성 : /create\n" +
                              "방 입장 : /join [방번호]\n" +
                              "방 나가기 : /exit\n" +
-                             "접속 종료 : /bye\n",
-            "현재 인원","현재은 명 입니다. "
+                             "접속 종료 : /bye\n"
     );
 
     public ChatServerThread(Socket socket, Map<String, PrintWriter> clients, Map<String, Integer> userRooms) {
@@ -69,7 +68,7 @@ public class ChatServerThread extends Thread {
                 break;
             }
 
-            // 접속 시 클라이언트의 정보 출력
+            // 접속 시 서버에서는 클라이언트의 정보 출력
             // [id] /port 번호 형태로 출력됨
             System.out.println("[" + id + "]" + socket.getInetAddress() + "." + socket.getPort() + " 님이 입장했습니다.");
             int size = clients.size() + 1;
@@ -146,6 +145,7 @@ public class ChatServerThread extends Thread {
         } catch (IOException e) {
             System.out.println(e);
         } finally {
+
             // 동시에 종료하는 경우 고려
             synchronized (clients) {
                 clients.remove(id);
@@ -176,6 +176,7 @@ public class ChatServerThread extends Thread {
 
     //  방 목록 보기
     public void listRooms() {
+        // 동시에 종료하는 경우 고려
         synchronized (userRooms) {
             // 방 목록
             Map<String, Integer> existRooms = userRooms.entrySet().stream()
@@ -196,6 +197,7 @@ public class ChatServerThread extends Thread {
 
     // 방 참가
     public void joinRoom(int roomNum) {
+        // 동시에 종료하는 경우 고려
         synchronized (userRooms) {
             // 해당 방 번호가 존재하는지 확인
             if (userRooms.values().contains(roomNum)) {
@@ -245,6 +247,7 @@ public class ChatServerThread extends Thread {
         userRooms.put(this.id, 0); // 사용자의 방 번호를 0으로 설정
         pw.println("방을 퇴장하였습니다.");
 
+        // 동시에 종료하는 경우 고려
         synchronized (clients) {
             // 해당 방에 남아있는 사용자가 있는지 확인
             boolean isRoomEmpty = userRooms.values().stream()
