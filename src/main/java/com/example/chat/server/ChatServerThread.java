@@ -85,7 +85,7 @@ public class ChatServerThread extends Thread {
         } catch (Exception e) {
             System.out.println(e);
         }
-    }//ChatServerThread
+    }
 
     @Override
     public void run() {
@@ -147,7 +147,7 @@ public class ChatServerThread extends Thread {
                 else {
                     sendMessage(msg);
                 }
-            } //try
+            }
         } catch (IOException e) {
             System.out.println(e);
         } finally {
@@ -176,9 +176,9 @@ public class ChatServerThread extends Thread {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            }//if
-        }//finally
-    }//run
+            }
+        }
+    }
 
     //  방 목록 보기
     public void listRooms() {
@@ -198,8 +198,8 @@ public class ChatServerThread extends Thread {
                 existRooms.forEach((roomNumber, roomName) -> pw.print(roomName + " "));
                 pw.println();
             }
-        }//synchronized
-    } //listRooms
+        }
+    }
 
     // 방 참가
     public void joinRoom(int roomNum) {
@@ -238,8 +238,8 @@ public class ChatServerThread extends Thread {
             } else {
                 pw.println("해당하는 방 번호가 존재하지 않습니다.");
             }
-        }//synchronized
-    } //joinRoom
+        }
+    }
 
     // join 해서 들어온 경우
     public void enterRoom(int room) {
@@ -274,7 +274,7 @@ public class ChatServerThread extends Thread {
             PrintWriter targetPw = clients.get(target);
             targetPw.println("[귓속말] " + id + "님의 메시지: " + message);
         }
-    }// sendWhisperMessage
+    }
 
 
     // 방 나가기
@@ -296,8 +296,8 @@ public class ChatServerThread extends Thread {
                 // 방에 남아있는 사용자에게 메시지 전송
                 sendMessageToRoom(currentRoom, id + "님이 퇴장했습니다.");
             }
-        }//synchronized
-    }//exitRoom
+        }
+    }
 
     // 특정 방에 있는 클라이언트들에게 메시지 전송
     public void sendMessageToRoom(int room, String message) {
@@ -310,10 +310,10 @@ public class ChatServerThread extends Thread {
                         clients.remove(clientId);
                         e.printStackTrace();
                     }
-                }//if
+                }
             });
-        }//synchronized
-    }//sendMessageToRoom
+        }
+    }
 
     // 메시지 보내기
     public void sendMessage(String msg) {
@@ -330,15 +330,15 @@ public class ChatServerThread extends Thread {
                         clients.remove(clientId);
                         e.printStackTrace();
                     }
-                }//if
+                }
             });
-        }//synchronized
-    }//sendMessage
+        }
+    }
 
     // AI 챗봇 응답 처리
     private void handleAIResponse(String message) {
         String response = AI_RESPONSES.getOrDefault(message, "죄송해요, 이해하지 못했어요.");
         pw.println(response);
-    }//handleAIResponse
+    }
 
-}//ChatServerThread
+}
