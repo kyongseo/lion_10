@@ -28,6 +28,7 @@ public class SelectTest {
                 System.out.println(rs.getString(3));
             }
 
+
         }catch (Exception e){
             e.printStackTrace();
         }finally {

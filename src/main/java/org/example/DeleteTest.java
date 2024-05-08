@@ -16,6 +16,7 @@ public class DeleteTest {
             throw new RuntimeException(e);
         }
 
+
         String sql = "delete from dept where deptno=60";
         try(Connection conn = DriverManager.getConnection(dbUrl,user,password);
             PreparedStatement ps = conn.prepareStatement(sql);

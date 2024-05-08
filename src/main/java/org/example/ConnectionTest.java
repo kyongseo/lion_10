@@ -14,6 +14,7 @@ public class ConnectionTest {
         //1.접속객체 얻어오기.
         Connection conn = DriverManager.getConnection(dbUrl,user,password);
 
+
         if(conn != null)
             System.out.println("^^");
         else

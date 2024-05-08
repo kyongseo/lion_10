@@ -8,6 +8,7 @@ public class DeptDAORun {
         deptDTO.setDeptname("like");
         deptDTO.setLoc("판교");
 
+
         // add
 //        boolean resultFlag = deptDAO.addDept(deptDTO);
 //        if (resultFlag)

@@ -118,7 +118,6 @@ public class DeptDAO {
 //                    throw new RuntimeException(e);
 //                }
 //            }
-            DBUtil.
         }
         return resultCount;
     }
@@ -133,6 +132,17 @@ public class DeptDAO {
      * 한 건 조회
      */
     public DeptDTO getDept(int deptno) {
+        //1. 필요한 객체 선언
+
+        //3.  접속
+
+        // 4. 쿼리 작성
+
+        //5. 실행
+
+        //6. 결과값 처리
+
+        // 2. 닫는다
         return null;
     }
 

@@ -29,6 +29,7 @@ public class DeptDTO {
         this.loc = loc;
     }
 
+
     @Override
     public String toString() {
         return "DeptDTO{" +

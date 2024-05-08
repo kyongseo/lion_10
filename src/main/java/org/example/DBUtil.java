@@ -22,11 +22,6 @@ public class DBUtil {
         Connection conn = null;
         return conn;
     }
-
-    public void static close(Connection conn){
-
-    }
-
     public void close(Connection conn, PreparedStatement ps){
 
     }

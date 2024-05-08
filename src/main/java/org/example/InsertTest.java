@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 public class InsertTest {
     public static void main(String[] args) {
+
         //1.필요한 객체를 선언한다.
         Connection conn = null;
         PreparedStatement ps = null;
