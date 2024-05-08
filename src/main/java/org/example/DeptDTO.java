@@ -2,7 +2,7 @@ package org.example;
 
 public class DeptDTO {
     private int deptno;
-    private String deptname;
+    private String dname;
     private String loc;
 
     public int getDeptno() {
@@ -13,12 +13,12 @@ public class DeptDTO {
         this.deptno = deptno;
     }
 
-    public String getDeptname() {
-        return deptname;
+    public String getDname() {
+        return dname;
     }
 
-    public void setDeptname(String deptname) {
-        this.deptname = deptname;
+    public void setDname(String dname) {
+        this.dname = dname;
     }
 
     public String getLoc() {
@@ -29,12 +29,11 @@ public class DeptDTO {
         this.loc = loc;
     }
 
-
     @Override
     public String toString() {
         return "DeptDTO{" +
                 "deptno=" + deptno +
-                ", deptname='" + deptname + '\'' +
+                ", dname='" + dname + '\'' +
                 ", loc='" + loc + '\'' +
                 '}';
     }

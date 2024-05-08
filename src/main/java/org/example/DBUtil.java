@@ -1,35 +1,54 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class DBUtil {
-    //DB 접속 하는 일을 하는 메서드
-    public static Connection getConnection() throws Exception {
+    //DB 접속
+    public static Connection getConnection() throws Exception{
         Connection conn = null;
         Class.forName("com.mysql.cj.jdbc.Driver");
         String dbUrl = "jdbc:mysql://localhost/exampledb";
-        String user = "root";
-        String password = "";
-        conn = DriverManager.getConnection(dbUrl, user, password);
-
+        String user = "root1234";
+        String password = "root1234";
+        conn = DriverManager.getConnection(dbUrl,user,password);
         return conn;
     }
 
-    public static Connection getConnection(String dbUrl, String user, String password) {
+    public static Connection getConnection(String dbUrl, String user, String password){
         Connection conn = null;
+
         return conn;
     }
-    public void close(Connection conn, PreparedStatement ps){
 
+
+    // DB close
+    public static void close(Connection conn){
+        if(conn != null){
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
-    public void close(Connection conn, PreparedStatement ps, ResultSet rs){
-
+    public static void close(Connection conn, PreparedStatement ps){
+        if(ps != null){
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        close(conn);
     }
-
-
-
-    // DB close 하는 메서드
+    public static void close(Connection conn, PreparedStatement ps, ResultSet rs){
+        if(rs != null){
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        close(conn,ps);
+    }
 }

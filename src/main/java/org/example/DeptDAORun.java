@@ -1,24 +1,38 @@
 package org.example;
 
+import java.util.List;
+
 public class DeptDAORun {
     public static void main(String[] args) {
         DeptDAO deptDAO = new DeptDAO();
         DeptDTO deptDTO = new DeptDTO();
-        deptDTO.setDeptno(60);
-        deptDTO.setDeptname("like");
-        deptDTO.setLoc("판교");
+        deptDTO.setDeptno(110);
+        deptDTO.setDname("like33");
+        deptDTO.setLoc("일산");
 
-
-        // add
+        // addDept
 //        boolean resultFlag = deptDAO.addDept(deptDTO);
-//        if (resultFlag)
-//            System.out.println("성공!!");
+//        if(resultFlag)
+//            System.out.println("입력성공!!");
 //        else
-//            System.out.println("실패ㅠㅠ");
-//
-        // update
-        int resultCount = deptDAO.updateDept(deptDTO);
-        System.out.println(resultCount);
+//            System.out.println("입력실패 ㅠㅠ");
 
+        // updateDept
+//        int resultCount = deptDAO.updateDept(deptDTO);
+//        System.out.println(resultCount);
+
+
+        //삭제테스트
+//        deptDAO.deleteDept(110);
+
+        //한 건 조회
+        DeptDTO resultDetpDto =   deptDAO.getDept(200);
+        System.out.println(resultDetpDto);
+
+        List<DeptDTO> deptList = deptDAO.getAllDept();
+
+        for(DeptDTO dto : deptList){
+            System.out.println(dto);
+        }
     }
 }
