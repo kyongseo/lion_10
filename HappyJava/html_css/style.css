@@ -1,0 +1,33 @@
+.checked {
+    text-decoration: line-through;
+    color: #adb5bd;
+}
+.title {
+    padding: 2rem;
+    font-size: 2.5rem;
+    text-align: center;
+    font-weight: 100;
+    background: #22b8cf;
+    color: white;
+}
+.container input{
+    background-color: #ffffff;
+    color: black;
+}
+.container button {
+    padding: 7px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    background-color: #22b8cf;
+    color: white;
+}
+.todos-wrapper {
+    min-height: 5rem;
+}
+.deleteBtn{
+    border: none;
+    background-color: white;
+    color: red;
+}
