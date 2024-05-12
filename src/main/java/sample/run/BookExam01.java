@@ -15,16 +15,17 @@ public class BookExam01 {
         System.out.println("ApplicationContext 생성 후!");
 
         // 아이디를 알려줌 => BookConfig
-        Book book1 = (Book) context.getBean("book1", Book.class);
+        // Book book1 = (Book) context.getBean("book1", Book.class); => 빈에 아이디가 아닌 타입을 넣어서 호츌하면 형변환 필요없음!
+        Book book1 = context.getBean("book1", Book.class);
         book1.setTitle("모두의 자바");
         book1.setPrice(20000);
         System.out.println("book1 : " + book1);
 
-        Book book2 = (Book) context.getBean("book2", Book.class);
+        Book book2 = context.getBean("book2", Book.class);
         book2.setTitle("자바의 모든 것");
         System.out.println("book2 : " + book2); // 자바의 모든 것
 
-        Book book3 = (Book) context.getBean("book2", Book.class);
+        Book book3 = context.getBean("book2", Book.class);
         book3.setTitle("자바의 모든 것 또다르게");
 
         System.out.println("book3 : " + book3); //자바의 모든 것 또다르게
