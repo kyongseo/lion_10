@@ -2,7 +2,7 @@ package sample.bean;
 
 import org.springframework.stereotype.Component;
 
-@Component("book1")
+@Component
 public class Book {
     private String title;
     private int price;
