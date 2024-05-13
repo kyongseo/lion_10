@@ -28,9 +28,11 @@ public class SpringJDBCApplication {
             // => BeanPropertyRowMapper 사용
 
             List<User> users = jdbcTemplate.query("Select id, name, email from users", new BeanPropertyRowMapper<>(User.class));
+
 //            for (User user : users) {
 //                System.out.println(user);
 //            }
+
             users.forEach(System.out::println);
         };
     }
