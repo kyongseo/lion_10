@@ -21,4 +21,10 @@ public class User {
         this.name = name;
         this.email = email;
     }
+
+    public User(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
 }
