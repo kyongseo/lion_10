@@ -1,4 +1,4 @@
-package org.example.멋사10기.study;
+package org.example.멋사10기.study.io;
 
 import java.io.BufferedReader;
 import java.io.IOException;
