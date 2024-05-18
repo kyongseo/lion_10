@@ -1,4 +1,6 @@
-package org.example.멋사10기.study;
+package org.example.멋사10기.study.date;
+
+import org.example.멋사10기.study.Day;
 
 public class Week {
 
