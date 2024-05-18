@@ -1,6 +1,5 @@
-package org.example.멋사10기.study;
+package org.example.멋사10기.study.collection;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class SetExam {
