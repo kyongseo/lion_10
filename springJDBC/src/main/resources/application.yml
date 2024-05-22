@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: springjdbc
+
+  datasource:
+    url: jdbc:mysql://localhost/exampledb
+    username: root1234
+    password: root1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
