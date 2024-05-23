@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>친구 폼 등록</title>
+</head>
+<body>
+
+<h1>찬구등록</h1>
+    <form th:action="@{/friends/add}" th:object="${friend}" method="post">
+        <label for="name">Name :</label>
+        <input type="text" id="name" th:field="*{name}" required />
+
+        <label th:for="email">Email : </label>
+        <input type="text" id="email" th:field="*{email}" required />
+        <input type="submit" value="친구등록">
+    </form>
+</body>
+</html>
